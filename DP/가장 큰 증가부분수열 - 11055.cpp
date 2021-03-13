@@ -1,26 +1,41 @@
+//수열 A가 주어졌을 때, 그 수열의 증가 부분 수열중에서 합이 가장 큰 것을 구하는 프로그램을 작성하시오.
+//입력 : 첫째 줄에 수열 A의 크기 N(1<=N<=1,000)이 주어진다. [10]
+//입력 : 둘째 줄에는 수열 A를 이루고 있는 Aj가 주어진다.(1<=Aj<=1,000) [1 100 2 50 60 3 5 6 7 8] 
+//출력 : 첫째 줄에 수열 A의 합이 가장 큰 증가 부분 수열의 합을 출력한다. [113]
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #define endl "\n"
-#define _CRT_SECURE_NO_WARNINGS
+#include<cstdio>
+#define MAX 1001
 using namespace std;
-int MAX(int a, int b) { return a > b ? a : b; }
+
+int N;
+int Arr[MAX];
+int DP[MAX];
+
 int main()
 {
-	int d[1000] = { 0 };
-	int a[1000] = { 0 };
-	int ans = 0; 
-	int n; scanf("%d", &n);
-	for (int i = 0; i < n; i++) {
-		scanf("%d", &a[i]);
+	cin >> N;
+	for (int i = 1; i <= N; i++)
+	{
+		cin >> Arr[i];
 	}
-	for (int i = 0; i < n; i++) {
-		d[i] = a[i];
-		for (int j = 0; j < i; j++) {
-			if (a[i] > a[j]) {
-				d[i] = MAX(d[i], a[i]+d[j]);
+	int Max = 0;
+	for (int i = 1; i <= N; i++)
+	{
+		DP[i] = Arr[i];
+		for (int j = 1; j <= i; j++)
+		{
+			if (Arr[j] < Arr[i] && DP[i] < DP[j] + Arr[j])
+			{
+				DP[i] = DP[j] + Arr[i];
 			}
 		}
-		ans = MAX(ans, d[i]);
+		if (Max < DP[i]) Max = DP[i];
 	}
-	printf("%d", ans);
-}
+	cout << Max << endl;
 
+	return 0;
+
+	}
